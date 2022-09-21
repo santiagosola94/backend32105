@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handlebars</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+</head>
+<body>
+    <h1 class="m-2 text-center">Handlebars</h1>
+    <nav class="m-2 text-center">
+        <a href="/"><button class="btn btn-primary">Inicio</button></a>
+        <a href="/productos"><button class="btn btn-primary">Productos</button></a>
+    </nav>
+    <table class="table table-dark table-striped">
+        {{#if ArrayProductos}}
+                <thead>
+                    <td>Titulo</td>
+                    <td>Precio</td>
+                    <td>Thumbnail</td>
+                </thead>
+            {{#each ArrayProductos}}
+                <tr>
+                    <td>{{this.title}}</td>
+                    <td>${{this.price}}</td>
+                    <td><img src="{{this.thumbnail}}" alt=""></td>
+                </tr>
+            {{/each}}
+        {{else}}
+            <div class="alert alert-warning">
+                <h2 class="text-center">No hay productos cargados</h2>
+            </div>
+        {{/if}}
+    </table>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
