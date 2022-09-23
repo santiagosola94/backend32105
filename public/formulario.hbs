@@ -65,67 +65,7 @@
     </div>
 
     <script src="socket.io/socket.io.js"></script>
-    <script>
-        const socket = io.connect()
-
-        socket.on('mensaje', (data)=>{
-            console.log(data)
-        })
-
-        socket.on('listadoProductos', (data)=>{
-            console.log(data)
-            render(data)
-        })
-
-        socket.on('mensajes', (data)=>{
-            console.log(data)
-            const listaMensajes = data.map((mensaje)=>
-            `
-                <li>
-                    <span style="color:blue"><b>${mensaje.email}</b></span> 
-                    <span style="color:red">[${mensaje.fecha}] :</span>
-                    <span style="color:green">${mensaje.msj}</span>
-                </li>
-            `).join(" ")
-            document.getElementById('historialMensajes').innerHTML = listaMensajes
-        })
-
-
-
-        function render(data){
-            const ArrayProductos = data.map((producto)=>
-                `<tr>
-                    <td>${producto.title}</td>
-                    <td>$${producto.price}</td>
-                    <td><img src=${producto.thumbnail} alt=""></td>
-                </tr>`
-            ).join(" ")
-            document.getElementById('cuerpoTabla').innerHTML = ArrayProductos
-        }
-
-        function crearProducto(){
-            const titulo = document.getElementById('title').value
-            const precio = document.getElementById('price').value
-            const thumb = document.getElementById('thumbnail').value
-
-            socket.emit('productoAgregado', {title: titulo, price: precio, thumbnail: thumb})
-            return false;
-        }
-
-        function mensajeEnviado(){
-            const emailUsuario = document.getElementById('emailUsuario').value
-            const mensajeUsuario = document.getElementById('mensajeUsuario').value
-            document.getElementById('mensajeUsuario').value = ""
-            const fecha = new Date()
-
-            if(emailUsuario != "") {
-                socket.emit('mensajeEnviado', {email: emailUsuario, fecha, msj: mensajeUsuario})
-                document.getElementById('emailIncorrecto').innerHTML = ""
-            } else {
-                document.getElementById('emailIncorrecto').innerHTML = '<div class="alert alert-warning">¡Ingrese un email!</div>'
-            }
-        }
-    </script>
+    <script src="index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
