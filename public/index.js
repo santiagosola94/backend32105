@@ -21,31 +21,41 @@ socket.on('mensajes', (data) => {
 function render(data) {
     const ArrayProductos = data.map((producto) =>
         `<tr>
-            <td>${producto.title}</td>
-            <td>$${producto.price}</td>
-            <td><img src=${producto.thumbnail} alt=""></td>
+            <td>${producto.Nombre}</td>
+            <td>$${producto.Precio}</td>
+            <td><img src=${producto.Foto} alt=""></td>
         </tr>`
     ).join(" ")
     document.getElementById('cuerpoTabla').innerHTML = ArrayProductos
 }
 
-function crearProducto() {
-    const titulo = document.getElementById('title').value
-    const precio = document.getElementById('price').value
-    const thumb = document.getElementById('thumbnail').value
+async function crearProducto() {
+    const Nombre = document.getElementById('Nombre').value
+    const Precio = document.getElementById('Precio').value
+    const Foto = document.getElementById('Foto').value
+    const Descripcion = document.getElementById('Descripcion').value
+    const Stock = document.getElementById('Stock').value
+    const Codigo = document.getElementById('Codigo').value
 
-    socket.emit('productoAgregado', { title: titulo, price: precio, thumbnail: thumb })
+    const date = new Date()
+    let Timestamp = date.toLocaleString();
+    const nuevoProducto = { nombre: Nombre, precio: Precio, foto: Foto, descripcion: Descripcion, stock: Stock, codigo: Codigo, timestamp: Timestamp }
+    socket.emit('productoAgregado', nuevoProducto)
     return false;
 }
+
+
 
 function mensajeEnviado() {
     const emailUsuario = document.getElementById('emailUsuario').value
     const mensajeUsuario = document.getElementById('mensajeUsuario').value
     document.getElementById('mensajeUsuario').value = ""
+
     const fecha = new Date()
+    let fechaParseada = fecha.toLocaleString();
 
     if (emailUsuario != "") {
-        socket.emit('mensajeEnviado', { email: emailUsuario, fecha, msj: mensajeUsuario })
+        socket.emit('mensajeEnviado', { email: emailUsuario, fecha: fechaParseada, msj: mensajeUsuario })
         document.getElementById('emailIncorrecto').innerHTML = ""
     } else {
         document.getElementById('emailIncorrecto').innerHTML = '<div class="alert alert-warning">¡Ingrese un email!</div>'
