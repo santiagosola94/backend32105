@@ -5,15 +5,35 @@ socket.on('listadoProductos', (data) => {
 })
 
 socket.on('mensajes', (data) => {
-    const listaMensajes = data.map((mensaje) =>
+    const schemaAuthor = new normalizr.schema.Entity('users')
+    const schemaMensajes = new normalizr.schema.Entity('message', {
+        author: schemaAuthor
+    })
+    const listadoMensajes = new normalizr.schema.Entity('listadoMensajes', {
+        mensajes: [schemaMensajes]
+    })
+    const normalizado = JSON.stringify(data).length
+
+    const objDenormalizado = normalizr.denormalize(data.result, listadoMensajes, data.entities)
+    const denormalizadoLength = JSON.stringify(objDenormalizado).length
+
+    const porcentajeDeCompresion = parseInt((denormalizadoLength - normalizado)*100/denormalizadoLength)
+
+    console.log(`Normalizado: ${normalizado}`)
+    console.log(`Denormalizado: ${denormalizadoLength}`)
+    console.log(`Porcentaje de compresion: ${porcentajeDeCompresion}%`)
+
+    const listaMensajes = objDenormalizado.mensajes.map((mensaje) =>
         `
         <li>
-            <span style="color:blue"><b>${mensaje.email}</b></span> 
-            <span style="color:red">[${mensaje.fecha}] :</span>
-            <span style="color:green">${mensaje.msj}</span>
+            <span style="color:blue"><b>${mensaje.author.id}</b></span> 
+            <span style="color:red">[${mensaje.date}] :</span>
+            <span style="color:green">${mensaje.text}</span>
+            <span><img src=${mensaje.author.avatar}></span>
         </li>
     `).join(" ")
     document.getElementById('historialMensajes').innerHTML = listaMensajes
+    document.getElementById('porcentajeCompresion').innerHTML = `<h2>Porcentaje de compresion: ${porcentajeDeCompresion}%</h2>`
 })
 
 
@@ -48,6 +68,11 @@ async function crearProducto() {
 
 function mensajeEnviado() {
     const emailUsuario = document.getElementById('emailUsuario').value
+    const nombreUsuario = document.getElementById('nombrelUsuario').value
+    const apellidolUsuario = document.getElementById('apellidoUsuario').value
+    const edadUsuario = document.getElementById('edadUsuario').value
+    const aliasUsuario = document.getElementById('aliasUsuario').value
+    const avatarUsuario = document.getElementById('avatarUsuario').value
     const mensajeUsuario = document.getElementById('mensajeUsuario').value
     document.getElementById('mensajeUsuario').value = ""
 
@@ -55,7 +80,18 @@ function mensajeEnviado() {
     let fechaParseada = fecha.toLocaleString();
 
     if (emailUsuario != "") {
-        socket.emit('mensajeEnviado', { email: emailUsuario, fecha: fechaParseada, msj: mensajeUsuario })
+        socket.emit('mensajeEnviado', { 
+            author: {
+                id: emailUsuario,
+                nombre: nombreUsuario,
+                apellido: apellidolUsuario,
+                edad: edadUsuario,
+                alias: aliasUsuario,
+                avatar: avatarUsuario
+            }, 
+            text: mensajeUsuario, 
+            date: fechaParseada
+        })
         document.getElementById('emailIncorrecto').innerHTML = ""
     } else {
         document.getElementById('emailIncorrecto').innerHTML = '<div class="alert alert-warning">¡Ingrese un email!</div>'

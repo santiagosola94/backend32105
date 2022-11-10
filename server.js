@@ -1,16 +1,19 @@
 import express from 'express'
 
-import Contenedor from './classContenedor.js'
-import mysqlConnection from './mysqlConnection.js'
-import sqliteConfig from './sqlite3/sqliteConfig.js'
-
-
 import {Server as HTTPServer} from 'http'
 import {Server as SocketServer } from 'socket.io'
 import path from 'path';
 import {fileURLToPath} from 'url';
 import handlebars from 'express-handlebars'
 import creacionDeTablas from './crearTablas.js'
+
+import Contenedor from './src/Contenedores/classContenedor.js'
+import Configuraciones from './src/config.js'
+
+import ContenedorArchivo from './src/Contenedores/ContenedorArchivo.js'
+import productosAleatorios from './src/productosAleatorios/fakerConsigna1.js'
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,9 +23,10 @@ const app = express();
 const httpServer = new HTTPServer(app)
 const io = new SocketServer(httpServer)
 
-const db = new Contenedor(mysqlConnection, "productos")
-const mensajes = new Contenedor(sqliteConfig, "tablamensajes")
+const db = new Contenedor(Configuraciones.mySQL, "productos")
+const mensajesArchivo = new ContenedorArchivo('mensajes.json')
 creacionDeTablas()
+
 
 app.set("json spaces", 2)
 app.use(express.json())
@@ -49,11 +53,12 @@ io.on('connection', async(socket) => {
         io.sockets.emit('listadoProductos', await db.getAll())
     })
     
-    socket.emit('mensajes', await mensajes.getAll())
+    socket.emit('mensajes', await mensajesArchivo.getAll())
     
     socket.on('mensajeEnviado', async(data) => {
-        mensajes.createProduct(data)
-        io.sockets.emit('mensajes', await mensajes.getAll())
+        console.log(data)
+        mensajesArchivo.createMessage(data)
+        io.sockets.emit('mensajes', await mensajesArchivo.getAll())
     })
 })
 
@@ -99,6 +104,11 @@ app.delete("/api/productos/:id", async (req,res)=>{
     await db.deleteProduct(id)
 
     res.send({productoEliminado: true})
+})
+
+app.get("/api/productos-test", (req,res)=>{
+    const productos = productosAleatorios()
+    res.send(productos)
 })
 
 

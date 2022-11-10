@@ -1,9 +1,9 @@
 import knex from "knex";
-import sqliteConfig from "./sqlite3/sqliteConfig.js";
-import mysqlConnection from "./mysqlConnection.js";
+import Configuraciones from "./src/config.js";
 
-const db = knex(sqliteConfig)
-const dbMySQL = knex(mysqlConnection)
+
+const db = knex(Configuraciones.sqliteConfig)
+const dbMySQL = knex(Configuraciones.mySQL)
 const creacionDeTablas = ()=>{
     db.schema.hasTable('tablaMensajes').then(function (exists) {
             if (!exists) {

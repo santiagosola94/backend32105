@@ -61,10 +61,15 @@
 
     <div class="container" style="background-color:rgb(225, 230, 230)">
         <h1 style="text-align:center">Centro de Mensajes</h1>
-
+        <div style="text-align:center" id="porcentajeCompresion"></div>
         <div>
             <div id="emailIncorrecto"></div>
             <input type="email" placeholder="Ingresar E-mail" id="emailUsuario">
+            <input type="text" placeholder="Ingresar Nombre" id="nombrelUsuario">
+            <input type="text" placeholder="Ingresar Apellido" id="apellidoUsuario">
+            <input type="number" placeholder="Ingresar Edad" id="edadUsuario">
+            <input type="text" placeholder="Ingresar Alias" id="aliasUsuario">
+            <input type="text" placeholder="Ingresar Avatar" id="avatarUsuario">
         </div>
         <div>
             <ul id="historialMensajes">
@@ -79,6 +84,7 @@
     </div>
 
     <!-- Configuraciones -->
+    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./index.js"></script>
 
