@@ -17,6 +17,25 @@
     <nav class="text-center m-2">
         <a href="/"><button class="btn btn-primary">Inicio</button></a>
     </nav>
+
+    {{#if mostrarRegistro}}
+        <div class="container p-2 my-2" style="background-color: rgb(192, 192, 170); text-align:center">
+            <h2>Bienvenido!</h2> 
+                <h4>No estas registrado ni loggeado. Apreta click en cualquiera de los dos botones</h4>
+            <a href="/register"><button class="btn btn-dark">Registro</button></a>
+            <a href="/login"><button class="btn btn-danger">Login</button></a>
+        </div>
+    {{/if}}
+
+    {{#if usuario}}
+        <div class="container p-2 my-2 d-flex justify-content-between" style="background-color: rgb(43,120,300);">
+            <h2>Bienvenido {{usuario}}</h2>
+            <form action="/logout" method="get">
+                <button id="salir" type="submit">Logout</button>
+            </form>
+        </div>
+    {{/if}}
+
     <div class="container" style="background-color:rgb(225, 230, 230)">
         <h2 style="text-align:center">Agrega tu Producto</h2>
         <form class="text-center m-4" onsubmit=crearProducto()>
