@@ -24,6 +24,15 @@ import bcrypt from 'bcrypt'
 
 import flash from 'connect-flash'
 
+import routerInfo from './src/Router/routerInfo.js';
+import puerto from './src/minimist/minimist.js';
+import routerAleatorio from './src/Router/api-randoms.js';
+import configEnv from './configEnv.js';
+
+//Configuracion de archivo .env
+configEnv()
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -58,11 +67,16 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: 'mongodb+srv://coderAdministrador:estrella1724@cluster0.egttbnl.mongodb.net/usuarios',
         mongoOptions: advanceOptions,
-        ttl: 60
+        ttl: 600
     }),
     resave: false,
     saveUninitialized: false
 }))
+
+/* rutas info y randoms*/
+
+app.use(routerInfo)
+app.use(routerAleatorio)
 
 /* Rutas de Login/logout */
 app.use(flash())
@@ -232,7 +246,6 @@ app.get("/api/productos-test", (req,res)=>{
 })
 
 
-
-httpServer.listen(8080, () => {
-    console.log('Servidor Iniciado')
+httpServer.listen(puerto.port, () => {
+    console.log(`Servidor Iniciado en el puerto:`, puerto.port)
 })

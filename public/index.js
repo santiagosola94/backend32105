@@ -41,9 +41,9 @@ socket.on('mensajes', (data) => {
 function render(data) {
     const ArrayProductos = data.map((producto) =>
         `<tr>
-            <td>${producto.Nombre}</td>
-            <td>$${producto.Precio}</td>
-            <td><img src=${producto.Foto} alt=""></td>
+            <td class="align-middle">${producto.Nombre}</td>
+            <td class="align-middle">$${producto.Precio}</td>
+            <td><img src=${producto.Foto} alt="" style="max-width: 80px"></td>
         </tr>`
     ).join(" ")
     document.getElementById('cuerpoTabla').innerHTML = ArrayProductos

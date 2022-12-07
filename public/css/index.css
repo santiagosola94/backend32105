@@ -1,0 +1,55 @@
+* {
+    box-sizing: border-box;
+    margin: 0px;
+}
+
+.divBienvenida{
+    background-color: rgb(192, 192, 170); 
+    text-align:center
+}
+
+.userLogged{
+    background-color: rgb(43,120,300);
+}
+
+.alMedio{
+    text-align: center;
+}
+
+.containerProductos {
+    background-color:rgb(225, 230, 230)
+}
+
+.containerMensajes{
+    background-color:rgb(225, 230, 230)
+}
+
+.flexFormulario {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.navContainer{
+    background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
+    padding: 10px;
+}
+
+.botonInicio {
+    background-color: #FBAB7E;
+    background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
+
+}
+
+.estilos {
+    padding: 0px 10px;
+    margin-left: 10px;
+    flex-direction: column;
+    font-size: x-small;
+}
+
+.iconoCuenta {
+    color:gray;
+}
